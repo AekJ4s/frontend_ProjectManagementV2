@@ -21,7 +21,8 @@ body {
 table {
   border: #fafaf9;
   border-radius: 10px;
-	width: 1500px;
+	position: relative;
+  width: 1000px;
 	overflow: hidden;
 
 }
