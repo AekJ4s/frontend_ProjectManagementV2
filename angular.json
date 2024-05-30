@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "PJMN_frontend": {
+    "frontend-projectManagements": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/pjmn-frontend",
+            "outputPath": "dist/frontend-project-managements",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -25,14 +25,10 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -62,10 +58,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "PJMN_frontend:build:production"
+              "buildTarget": "frontend-projectManagements:build:production"
             },
             "development": {
-              "buildTarget": "PJMN_frontend:build:development"
+              "buildTarget": "frontend-projectManagements:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +69,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "PJMN_frontend:build"
+            "buildTarget": "frontend-projectManagements:build"
           }
         },
         "test": {
@@ -96,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "b54cc12b-450a-4cb2-a520-6e84833f3e0c"
   }
 }

@@ -1,0 +1,206 @@
+<div class="container">
+  <form (ngSubmit)="onSubmit()" class="form"  ngNativeValidate>
+    <div class="row mt-5">
+      <h4 class="heading" >โครงการใหม่</h4>
+      <div >
+        <input
+          class="input"
+          type="text"
+          [(ngModel)]="project.name"
+          name="name"
+          placeholder="ชื่อโครงการ"
+          required
+        />
+        <div class="input-icon"><i class="fa fa-user"></i></div>
+      </div>
+      <div >
+        <input
+        class="input"
+          type="text"
+          [(ngModel)]="project.detail"
+          name="detail"
+          placeholder="รายละเอียดของโครงการ"
+        />
+        <div class="input-icon"><i class="fa fa-envelope"></i></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-half">
+        <h4 class="heading mt-5">วันเริ่มโครงการ</h4>
+        <div >
+          <input
+            class="input"
+            type="date"
+            [(ngModel)]="project.startDate"
+            name="startdate"
+            placeholder="Date Start Project"
+            (ngModelChange)="onStartDateChange()"
+            required
+          />
+        </div>
+      </div>
+      <div class="col-half">
+        <h4 class="heading mt-5">วันสิ้นสุดโครงการ</h4>
+        <div >
+          <input
+            class="input"
+            type="date"
+            [(ngModel)]="project.endDate"
+            name="enddate"
+            placeholder="Date End Project"
+            (ngModelChange)="onStartDateChange()"
+            required
+          />
+          <div *ngIf="isDateInvalid" style="color: red">
+            ****วันสิ้นสุดโครงการไม่สามารถกรอกเป็นวันที่มาก่อนโครงการได้
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3 border-top border-3">
+      <h4 class="mt-3 heading">กิจกรรมโครงการ</h4>
+      <div class="containerAct">
+        <div class="row">
+          <table class="mb-3">
+            <thead>
+              
+            </thead>
+            <tbody class="text-center">
+              <ng-container
+                *ngTemplateOutlet="recursiveListTmpl; context:{ list: project.activities, level: 1 }"
+              ></ng-container>
+            </tbody>
+          </table>
+          <div class="row">
+            <div class="col-half">
+              <button
+                type="button"
+                (click)="addParentActivity()"
+                class="login-button"
+                style="width: 300px; height: 50px; align-items: center;"
+              >
+                เพิ่มกิจกรรม
+                
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 border-top border-3 ">
+        <h4 class="mt-3 content"> อัพโหลดไฟล์ที่เกี่ยวข้องกับโปรเจค</h4>
+        
+        <div class="d-flex justify-content-center">
+          <input class="buttonforfile" id="file" type="file" (change)="uploading($event)" multiple/>
+          </div>
+       
+        <div *ngFor="let file of projectFile , let i = index" >
+          <ng-container *ngIf="file.isDeleted != true && file.projectId != null  " >
+            
+            <div class="cardforfile" >
+              <div class="d-flex justify-content-between align-items-center">
+                
+                <div class="titleforfile">
+                  <p class="titleforfile-text">{{i+1}} | {{file.fileUpload?.fileName}} |</p>
+                </div>
+               
+                <div class="d-flex">
+                  <button
+                    class="login-button-add"
+                    type="button"
+                    (click)="onDownload(file.fileuploadId.toString(),file.fileUpload?.fileName)"
+                    download
+                  >
+                   
+                    <span class="icon2Download"></span>
+                    <span class="tooltipDownload">โหลดรูปภาพ</span>
+                  </button>
+                  <button
+                    class="login-button-delete ms-3"
+                    type="button"
+                    (click)="deleteProjectWithFile(file)"
+                  ><span>ลบรูปภาพ</span>
+                    
+                  </button>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- FOR A NEW FILE -->
+        <ng-container *ngFor="let file of files ; let i = index ">
+        
+          <div class="border-top mt-3">
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="titleforfile">
+                <p class="titleforfile-text">{{i+1}} | {{file.name}} | <svg xmlns="http://www.w3.org/2000/svg" width="30px" height="30px" viewBox="0 0 16 16">
+                  <path d="m 3 1 c -1.644531 0 -3 1.355469 -3 3 v 8 c 0 1.644531 1.355469 3 3 3 h 3 c 0.550781 0 1 -0.449219 1 -1 s -0.449219 -1 -1 -1 h -3 c -0.5625 0 -1 -0.4375 -1 -1 v -7 h 11 c 0.5625 0 1 0.4375 1 1 v 1 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -1 c 0 -1.644531 -1.355469 -3 -3 -3 h -3.585938 l -1.707031 -1.707031 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 2 h 3.585938 l 1 1 h -5.585938 c 0 -0.5625 0.4375 -1 1 -1 z m 8 5 v 3 h -3 v 2 h 3 v 3 h 2 v -3 h 3 v -2 h -3 v -3 z m 0 0" fill="#2e3436"/>
+              </svg> </p> 
+              </div>
+              <div class="d-flex">
+                <button
+                  class="login-button-delete "
+                  type="button"
+                  (click)="deleteSelect(i)"
+                >
+                ลบไฟล์
+                </button>
+              </div>
+            </div>
+          </div>
+          </ng-container>
+      </div>
+      <div class="border-top border-3 border-dark mt-3">
+        <button type="submit" class="login-button mt-3 " style="width: 300px; height: 50px; align-items: center">
+          บันทึกข้อมูลโครงการ
+      
+        </button>
+        <button type="button" class="login-button-delete mt-3 " style="width: 300px; height: 50px; align-items: center"
+          (click)="deleteProject(project.id)">
+          <span class="text">ลบข้อมูลโครงการ</span>
+        </button>
+      </div>
+
+      <ng-template #recursiveListTmpl let-list="list" let-level="level">
+        <ng-container *ngFor="let item of list;  ">
+          <ng-container *ngIf="item.isDeleted != true">
+            <tr>
+              <td *ngFor="let l of forfirsttd(level)"></td>
+              <td>
+                <input
+                  class="inputAct"
+                  [(ngModel)]="item.name"
+                  [ngModelOptions]="{standalone:true}"
+                  placeholder="ชื่อกิจกรรม"
+                  required
+                />
+              </td>
+              <td *ngFor="let l of forlasttd(level)"></td>
+              <td>
+                <button
+                  type="button"
+                  *ngIf="level < 3"
+                  (click)="addChildActivity(item)"
+                  class="login-button-add ms-3"
+                >
+                  เพิ่มกิจกรรมย่อย
+                </button>
+                <button
+                  type="button"
+                  (click)="deleteInverseActivity(item)"
+                  class="login-button-delete ms-3"
+                >
+                  ลบกิจกรรมนี้
+                </button>
+              </td>
+            </tr>
+            <ng-container
+              *ngTemplateOutlet="recursiveListTmpl; context:{ list: item.inverseActivityHeader, level: level + 1 }"
+            ></ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-template>
+    </div>
+  </form>
+</div>

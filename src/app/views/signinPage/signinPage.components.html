@@ -1,0 +1,44 @@
+<html lang="en">
+  <head>
+    <style>
+      body,
+      html {
+        height: 100%;
+        margin: 0;
+      }
+      .containerX {
+        display: grid;
+        place-items: center;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <div class="containerX">
+    <div class=" justify-content-center align-item-center">
+    <div class="heading">Sign In</div>
+    <form  class="form" (submit)="onSubmit()">
+      <input
+        class="input"
+        type="userName"
+        [(ngModel)]="loginby.userName"
+        name="userName"
+        id="userName"
+        placeholder="userName"
+        required
+
+      />
+      <input
+      [(ngModel)]="loginby.password"
+        class="input"
+        type="password"
+        name="password"
+        id="password"
+        placeholder="Password"
+        required
+      />
+      <input class="login-button" type="submit" value="Sign In" />
+    </form>
+    
+  </div>
+  </div>
+</html>

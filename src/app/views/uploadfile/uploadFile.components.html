@@ -1,0 +1,20 @@
+<h2>Upload Image</h2>
+<input type="file" name="image" (change)="uploading($event)" multiple>
+<div>
+  <img [src]="show_url">
+</div>
+<div> Here this is your file
+  <div class="card w-50">
+    <div *ngFor="let item of files; let i = index" class="d-flex">
+      <p>{{i+1}}</p>
+      <p class="ms-4">{{item.name}}</p>
+      <button (click)="deleteSelect(i)" class=" text-danger ms-4 btn btn-sm">X</button>
+    </div>
+  </div>
+
+</div>
+@if (files != null) {
+  <div>
+    <button type="submit" (click)="onSubmit()">UPLOAD THIS FILE</button>
+  </div>
+}
